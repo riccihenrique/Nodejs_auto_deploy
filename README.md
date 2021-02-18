@@ -1,6 +1,6 @@
 # NodeJs Auto Deploy 
 
-#### Autodeploy your node application with this project. To use it, you will need complete the "configuration.json" file with yourself information, like Repository URL, Local Path to save or manege the project (don't forget to put the complete path), index file and list of command to execute.
+#### Autodeploy your node application with this project. To use it, you will need complete the "configuration.json" file with yourself information, like **repository URL**, **local path** to save or manege the project (don't forget to put the absolute path), **index file** and **list of command** to execute.
 
 
 #### To do the auto deploy by github actions, add this code on your workflow file and replace the informations.
