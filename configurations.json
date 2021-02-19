@@ -2,8 +2,12 @@
     "repository" : "https://github.com/~~~/~~~.git",
     "full_local_path" : "C:\\~~~",
     "index_file" : "index.js",
-    "package_maneger_commands" : [
+    "first_time_commands" : [
         "npm install",
-        "pm2 restart server"
+        "pm2 start index.js --name \"test\""
+    ],
+    "commands" : [
+        "npm install",
+        "pm2 restart test"
     ]
 }
