@@ -6,11 +6,12 @@
 #### To do the auto deploy by github actions, add this code on your workflow file and replace the informations.
 
 ```yml
-      - name: Webhook Action
-        uses: joelwmale/webhook-action@2.0.1
+      - name: AutoDeploy Request
+        uses: fjogeleit/http-request-action@master
         with:
-          url: yourServerIPHere:YourPortHere
+          url: 'http://yourServerIPHere:YourPortHere'
+          method: 'GET'
 ```
 
 ###### This code makes a request to the server application and will execute the tasks to auto deploy your node project.
-###### Don't forget to change "yourServerIpHere" by yourself IP and "YourPortHere" by yourself port.
+###### Don't forget to change "yourServerIpHere" by yourself IP and "YourPortHere" by yourself port (The port default of the application id 6643).
