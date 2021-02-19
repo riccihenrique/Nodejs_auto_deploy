@@ -35,19 +35,19 @@ const autoDeploy = _ => {
     let is_first_time = false;
     // Clone or Pull the changes
     if(fs.existsSync(configurations.full_local_path + '/' + projectName + '/' + configurations.index_file)) {
-        console.log(execSync(`cd ${configurations.full_local_path}/${projectName} & git pull`).toString());
+        console.log(execSync(`cd ${configurations.full_local_path}/${projectName} && git pull`).toString());
     }
     else {
-        console.log(execSync(`cd ${configurations.full_local_path} & git clone ${configurations.repository}`).toString());
+        console.log(execSync(`cd ${configurations.full_local_path} && git clone ${configurations.repository}`).toString());
         is_first_time = true;
     }
 
     // Run Npm/Yarn commands (use this to run tests, (re)start the server or build the application)
 
     // Usually, first time execution run different commands, like create database or create the server
-    const commands = (is_first_time ? configurations.first_time_commands : first_time_commands.commands).join(' & ');
+    const commands = (is_first_time ? configurations.first_time_commands : first_time_commands.commands).join(' && ');
 
-    exec(`cd ${configurations.full_local_path}/${projectName} & ${commands} & `, (error, stdout, stderr) => {
+    exec(`cd ${configurations.full_local_path}/${projectName} && ${commands}`, (error, stdout, stderr) => {
         if(error)
             console.log(error);
 
