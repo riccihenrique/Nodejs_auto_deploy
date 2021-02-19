@@ -12,8 +12,11 @@ function validConfiguration(config) {
     if(!config.repository)
         throw new Error('Repository was not found.');
 
-    if(!config.package_maneger_commands)
-        throw new Error('Package maneger commands was not found.');
+    if(!config.first_time_commands)
+        throw new Error('First time commands was not found.');
+
+    if(!config.commands)
+        throw new Error('Commands was not found.');
 }
 
 function getProjectName(repository) {
