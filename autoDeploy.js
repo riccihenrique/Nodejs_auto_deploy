@@ -45,7 +45,7 @@ const autoDeploy = _ => {
     // Run Npm/Yarn commands (use this to run tests, (re)start the server or build the application)
 
     // Usually, first time execution run different commands, like create database or create the server
-    const commands = (is_first_time ? configurations.first_time_commands : first_time_commands.commands).join(' && ');
+    const commands = (is_first_time ? configurations.first_time_commands : configurations.commands).join(' && ');
 
     exec(`cd ${configurations.full_local_path}/${projectName} && ${commands}`, (error, stdout, stderr) => {
         if(error)
