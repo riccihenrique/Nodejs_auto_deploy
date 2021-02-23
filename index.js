@@ -1,5 +1,5 @@
 const express = require('express')();
-const autodeploy = require('./autoDeploy.js');
+const autodeploy = require('./src/autoDeploy.js');
 
 express.use('/', (req, res) =>{
     autodeploy();
