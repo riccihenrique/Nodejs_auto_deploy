@@ -19,3 +19,5 @@
 
 ###### This code makes a request and will execute the tasks to auto deploy your node project.
 ###### Don't forget to change "yourServerIpHere" by your server IP.
+
+#### [Here](https://www.youtube.com/watch?v=tF_Ta0amX_E) is a configuration tutorial (in Portuguese).
