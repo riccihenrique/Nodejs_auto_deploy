@@ -26,7 +26,7 @@ function getProjectName(repository) {
 }
 
 const autoDeploy = _ => {
-    const configurations = JSON.parse(fs.readFileSync('./configurations.json'));
+    const configurations = JSON.parse(fs.readFileSync(__dirname + '/configurations.json'));
 
     validConfiguration(configurations);
     configurations.full_local_path = configurations.full_local_path.replace('\\', '/');
