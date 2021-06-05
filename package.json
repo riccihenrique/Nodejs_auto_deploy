@@ -1,17 +1,29 @@
 {
-  "name": "AutoDeploy",
-  "version": "1.0.0",
-  "description": "",
+  "name": "autodeployjs",
+  "version": "1.0.2",
+  "description": "AutoDeploy for nodeJs applications",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon"
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/riccihenrique/Nodejs_auto_deploy.git"
+  },
+  "keywords": [
+    "autodeploy"
+  ],
+  "author": "ricciHenrique",
+  "license": "MIT",
+  "bin": {
+    "autodeploy": "./index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/riccihenrique/Nodejs_auto_deploy/issues"
+  },
+  "homepage": "https://github.com/riccihenrique/Nodejs_auto_deploy/blob/master/README.md",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {

@@ -1,14 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 const { exec, execSync } = require('child_process');
-const { config, stdout, stderr } = require('process');
 
 function validConfiguration(config) {
-    if(!config.full_local_path)
-        throw new Error('Full local path was not found.');
-
-    if(!config.index_file)
-        throw new Error('Index file was not found.');
-
     if(!config.repository)
         throw new Error('Repository was not found.');
 
@@ -25,38 +19,60 @@ function getProjectName(repository) {
     return lastPartSplit.split('.')[0];
 }
 
-const autoDeploy = _ => {
-    const configurations = JSON.parse(fs.readFileSync(__dirname + '/configurations.json'));
-
-    validConfiguration(configurations);
-    configurations.full_local_path = configurations.full_local_path.replace('\\', '/');
-    const projectName = getProjectName(configurations.repository);
-
-    let is_first_time = false;
-    // Clone or Pull the changes
-    if(fs.existsSync(configurations.full_local_path + '/' + projectName + '/' + configurations.index_file)) {
-        console.log(execSync(`cd ${configurations.full_local_path}/${projectName} && git pull`).toString());
-    }
-    else {
-        console.log(execSync(`cd ${configurations.full_local_path} && git clone ${configurations.repository}`).toString());
-        is_first_time = true;
-    }
-
-    // Run Npm/Yarn commands (use this to run tests, (re)start the server or build the application)
-
-    // Usually, first time execution run different commands, like create database or create the server
-    const commands = (is_first_time ? configurations.first_time_commands : configurations.commands).join(' && ');
-
-    exec(`cd ${configurations.full_local_path}/${projectName} && ${commands}`, (error, stdout, stderr) => {
-        if(error)
-            console.log(error);
-
-        if(stderr)
-            console.log(stderr);
-
-        if(stdout)
-            console.log(stdout);
-    });
+function getNextArg(args) {
+    return args.slice(3).join(' ');
 }
 
-module.exports = autoDeploy;
+function processArgs() {
+    const args = process.argv;
+    if(execSync('npm list -g pm2').includes('`-- (empty)')) {
+        console.log('Aguarde... estamos instalando algumas dependências :)');
+        execSync('npm install -g pm2');
+    }
+
+    if(args.includes('status')) {
+        const nextArg = getNextArg(args);
+        execSync('pm2 status ' + nextArg);
+    }
+    if(args.includes('stop')) {
+        const nextArg = getNextArg(args);
+        execSync('pm2 stop ' + nextArg);
+    }
+    if(args.includes('restart')) {
+        const nextArg = getNextArg(args);
+        execSync('pm2 restart ' + nextArg);
+    }
+    else {
+        throw new Error('Command not found.');
+    }
+}
+
+const autoDeploy = (config) => {
+    let is_first_time = false;
+
+    validConfiguration(config);
+    const projectName = getProjectName(config.repository);
+    const appDir = path.resolve(__dirname, 'application', config.path);
+
+    if(fs.existsSync(appDir)) {
+        console.log(execSync(`cd ${appDir}/${projectName} && git pull`).toString());
+    }
+    else {
+        execSync(`mkdir ${ appDir }`)
+        console.log(execSync(`cd ${appDir} && git clone ${config.repository}`).toString());
+        is_first_time = true;
+    }
+    const commands = (is_first_time ? config.first_time_commands : config.commands).join(' && ');
+
+    try {
+        execSync(`cd ${appDir}/${projectName} && ${commands}`);
+    }
+    catch (e) {
+        if(is_first_time) {
+            execSync(`rmdir ${ appDir } /s /q`);
+        }
+        throw e;
+    }
+}
+
+module.exports = { processArgs, autoDeploy };
