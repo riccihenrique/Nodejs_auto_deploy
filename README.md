@@ -1,13 +1,18 @@
 # NodeJs Auto Deploy 
 
-#### Deploy your node application automatically with this project. To use it, you will need complete the "configuration.json" file with yourself information, like **repository URL**, **local path** to save or manage the project (don't forget to put the absolute path), **index file** and **list of command** to execute.
+#### Faça deploy automático de sua aplicação node, assim como plataformas como Heroku, utilizando esse rápido e simples gerenciador.
 
-#### You need follow the steps above on your server:
-- Enable the port 6643 on your firewall;
-- Run "npm install" to install the project dependences;
-- Run "npm start &" to run the application in background.
+#### Para a execução, será necessário seguir os passos abaixo:
+- Habilite a porta 6643 no seu firewall;
+- Você pode instalat a aplicação com o comando npm install -g autodeployjs;
+- Execute autodeployjs &.
 
-#### To do the auto deploy by github actions, add this code on your workflow file project and replace the informations.
+#### É possível obter informações sobre as aplicação que estão rodando, alguma das flags abaixo:
+- status (exibe os status das aplicações)
+- restart (reinicia uma aplicação)
+- stop (para uma aplicação)
+
+#### Para habilitar o autodeploy de alguma aplicação, basta inserir a action abaixo em um arquivo .yml dentro dos workflows do github action. Isso fará com que, ao receber alguma modificação, envia um pedido ao servidor e realize os passos para inserir as atualizações novas e restartar a aplicação.
 
 ```yml
       - name: AutoDeploy Request
@@ -22,7 +27,13 @@
           }
 ```
 
-###### This code makes a request and will execute the tasks to auto deploy your node project.
-###### Don't forget to change "yourServerIpHere" by your server IP.
+#### Para ver a resposta do servidor, contendo erros ou sucesso, adicione o passo abaixo no arquivo yml
+
+```yml
+      - name: Response
+        run: echo ${{ steps.myRequest.outputs.response }}
+```
+
+###### Não esqueça de alterar as informações de IP e nome da aplicação.
 
 #### [Here](https://www.youtube.com/watch?v=tF_Ta0amX_E) is a configuration tutorial (in Portuguese).
