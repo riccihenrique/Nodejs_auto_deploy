@@ -13,8 +13,13 @@
       - name: AutoDeploy Request
         uses: fjogeleit/http-request-action@master
         with:
-          url: 'http://yourServerIPHere:6643'
-          method: 'GET'
+          url: 'http://yourServerIPHere:6643/nameOfApplication'
+          method: 'POST'
+          data: {
+            "repository": "repoUrlHere",
+            "first_time_commands": ["command1Here", "command2Here"],
+            "commands": ["command1Here", "command2Here"]
+          }
 ```
 
 ###### This code makes a request and will execute the tasks to auto deploy your node project.
