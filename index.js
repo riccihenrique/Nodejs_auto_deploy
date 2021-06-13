@@ -1,16 +1,19 @@
-const express = require('express')();
+#!/usr/bin/env node
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const { processArgs, autoDeploy } = require('./src/autoDeploy.js');
+const autodeployjs = require('./src/autoDeployJs.js');
 const cors = require('cors');
 
-express.use(bodyParser.json());
-express.use(cors());
+app.use(bodyParser.json());
+app.use(cors());
+
 if(process.argv.length <= 2) {
-    express.use('/:path', (req, res) => {
+    app.use('/:path', (req, res) => {
         const config  = { ...req.body };
         config.path = req.params.path;
         try {
-            autoDeploy(config);
+            autodeployjs(config);
             res.status(200).send('Ok.');
         }
         catch (err) {
@@ -21,13 +24,13 @@ if(process.argv.length <= 2) {
         }
     });
 
-    express.listen(6643, _ => {
+    app.listen(6643, _ => {
         console.log('Running at 6643');
     }).on('error', console.log);
 }
 
-module.exports = processArgs;
+module.exports = autodeployjs;
 
-if(!module.parent && process.argv.length > 2) {
-    processArgs();
+if(!module.parent) {
+    autodeployjs();
 }

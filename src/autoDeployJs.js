@@ -1,6 +1,7 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const { exec, execSync } = require('child_process');
+const { execSync } = require('child_process');
 
 function validConfiguration(config) {
     if(!config.repository)
@@ -25,10 +26,6 @@ function getNextArg(args) {
 
 function processArgs() {
     const args = process.argv;
-    if(execSync('npm list -g pm2').includes('`-- (empty)')) {
-        console.log('Aguarde... estamos instalando algumas dependências :)');
-        execSync('npm install -g pm2');
-    }
 
     if(args.includes('status')) {
         const nextArg = getNextArg(args);
@@ -42,37 +39,51 @@ function processArgs() {
         const nextArg = getNextArg(args);
         execSync('pm2 restart ' + nextArg);
     }
-    else {
-        throw new Error('Command not found.');
-    }
 }
 
-const autoDeploy = (config) => {
+const autoDeployJs = (config) => {
+    const isWin = process.platform === "win32";
+
+    if(execSync('npm list -g pm2').includes('`-- (empty)')) {
+        console.log('Aguarde... estamos instalando algumas dependências :)');
+        execSync(`${isWin ? '' : 'sudo '}npm install -g pm2`);
+    }
+
+    if(!config) {
+        processArgs();
+        return;
+    }
+
     let is_first_time = false;
 
     validConfiguration(config);
     const projectName = getProjectName(config.repository);
     const appDir = path.resolve(__dirname, 'application', config.path);
 
-    if(fs.existsSync(appDir)) {
-        console.log(execSync(`cd ${appDir}/${projectName} && git pull`).toString());
-    }
-    else {
-        execSync(`mkdir ${ appDir }`)
-        console.log(execSync(`cd ${appDir} && git clone ${config.repository}`).toString());
-        is_first_time = true;
-    }
-    const commands = (is_first_time ? config.first_time_commands : config.commands).join(' && ');
-
     try {
+        if(fs.existsSync(appDir)) {
+            console.log(execSync(`cd ${appDir}/${projectName} && ${isWin ? '' : 'sudo '}git pull`).toString());
+        }
+        else {
+            execSync(`${isWin ? '' : 'sudo '}mkdir ${ appDir }`)
+            console.log(execSync(`cd ${appDir} && ${isWin ? '' : 'sudo '}git clone ${config.repository}`).toString());
+            is_first_time = true;
+        }
+        const commands = (is_first_time ? config.first_time_commands : config.commands).join(' && ');
+
         execSync(`cd ${appDir}/${projectName} && ${commands}`);
     }
     catch (e) {
         if(is_first_time) {
-            execSync(`rmdir ${ appDir } /s /q`);
+            if(isWin) {
+                execSync(`rmdir ${ appDir } /s /q`);
+            }
+            else {
+                execSync(`sudo rm -r ${ appDir }`);
+            }
         }
         throw e;
     }
 }
 
-module.exports = { processArgs, autoDeploy };
+module.exports = autoDeployJs;
