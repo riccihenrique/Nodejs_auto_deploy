@@ -42,6 +42,7 @@ function processArgs() {
 }
 
 const autoDeployJs = (config) => {
+    console.log(config);
     const isWin = process.platform === "win32";
 
     if(execSync('npm list -g pm2').includes('`-- (empty)')) {
