@@ -68,7 +68,7 @@ const autoDeployJs = (config) => {
         else {
             console.log(!fs.existsSync(path.resolve(__dirname, 'application')))
             if(!fs.existsSync(path.resolve(__dirname, 'application'))) {
-               execSync(`${isWin ? '' : 'sudo '}mkdir application`);
+               execSync(`${isWin ? '' : 'sudo '}mkdir ${path.resolve(__dirname, 'application')}`);
                 
             }
             execSync(`${isWin ? '' : 'sudo '}mkdir ${ appDir }`)
