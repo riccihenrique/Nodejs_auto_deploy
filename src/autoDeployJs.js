@@ -66,8 +66,10 @@ const autoDeployJs = (config) => {
             console.log(execSync(`cd ${appDir}/${projectName} && ${isWin ? '' : 'sudo '}git pull`).toString());
         }
         else {
+            console.log(!fs.existsSync(path.resolve(__dirname, 'application')))
             if(!fs.existsSync(path.resolve(__dirname, 'application'))) {
                execSync(`${isWin ? '' : 'sudo '}mkdir application`);
+                
             }
             execSync(`${isWin ? '' : 'sudo '}mkdir ${ appDir }`)
             console.log(execSync(`cd ${appDir} && ${isWin ? '' : 'sudo '}git clone ${config.repository}`).toString());
