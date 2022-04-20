@@ -6,7 +6,7 @@
 - Habilite a porta 6643 no seu firewall;
 - Você pode instalat a aplicação com o comando npm install -g autodeployjs;
 - Execute autodeployjs &.
- sd
+ sdsdas
 #### É possível obter informações sobre as aplicação que estão rodando, alguma das flags abaixo:
 - status (exibe os status das aplicações)
 - restart (reinicia uma aplicação)
