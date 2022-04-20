@@ -1,3 +1,3 @@
 describe("ah", () => {
-    expect(true).equal(true)
+    expect(true).toBe(true)
 })
