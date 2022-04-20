@@ -1,3 +1,6 @@
 describe("ah", () => {
-    expect(true).toBe(true)
+    
+    test("Teste", () => {
+        expect(true).toBe(true)
+    });
 })
