@@ -10,7 +10,7 @@
 #### É possível obter informações sobre as aplicação que estão rodando, alguma das flags abaixo:
 - status (exibe os status das aplicações)
 - restart (reinicia uma aplicação)
-- stop (para uma aplicação)
+- stop (para uma aplicação). gfgdf
 
 #### Para habilitar o autodeploy de alguma aplicação, basta inserir a action abaixo em um arquivo .yml dentro dos workflows do github action. Isso fará com que, ao receber alguma modificação, envia um pedido ao servidor e realize os passos para inserir as atualizações novas e restartar a aplicação.
 
